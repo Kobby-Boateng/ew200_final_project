@@ -2,6 +2,7 @@ import pygame
 import random
 import sys
 from shooter import Shooter
+from enemies import Enemies
 import math
 
 
@@ -27,7 +28,10 @@ background = pygame.image.load("assets/full_background.png")
 background = pygame.transform.scale(background, (SCREEN_WIDTH, SCREEN_HEIGHT))
 self_image = pygame.image.load("assets/tile.png")
 self_image = pygame.transform.scale(self_image, (50, 50))
+
+
 shooter = Shooter(20,30)
+enemies = Enemies(200,200)
 
 bg = pygame.image.load("assets/full_background.png")
 background = pygame.transform.scale(bg, (SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -49,7 +53,7 @@ while True:
             if event.key == pygame.K_UP:
                 shooter.moving_up = True
             if event.key == pygame.K_DOWN:
-                shooter.moving_down = True
+               shooter.moving_down = True
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT:
                 shooter.moving_left = False
@@ -61,11 +65,11 @@ while True:
                 shooter.moving_down = False
     shooter.update()
 
-
-
     screen.blit(background,(0,0))
     screen.blit(self_image, (100,100))
     shooter.draw(screen)
+    enemies.draw(screen)
+    enemies.enemies_AI(shooter)
     pygame.display.update()
 
 
