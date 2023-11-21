@@ -1,10 +1,11 @@
 import pygame
 import math
 
-class Enemies:
+class Enemy(pygame.sprite.Sprite):
     def __init__ (self, x,y):
+        super().__init__()
         self.image = pygame.image.load("assets/enemies.png")
-        self.rect = pygame.rect.Rect(x, y, self.image.get_width(), self.image.get_height())
+        self.rect = pygame.Rect(x, y, self.image.get_width(), self.image.get_height())
 
     def enemies_AI(self, shooter):
         enemy_x = self.rect.centerx
@@ -28,3 +29,5 @@ class Enemies:
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
+
+enemy = pygame.sprite.Group()

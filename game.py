@@ -2,7 +2,7 @@ import pygame
 import random
 import sys
 from shooter import Shooter
-from enemies import Enemies
+from enemy import Enemy
 import math
 
 
@@ -31,12 +31,27 @@ self_image = pygame.transform.scale(self_image, (50, 50))
 
 
 shooter = Shooter(20,30)
-enemies = Enemies(200,200)
+enemies = Enemy(200, 200)
+
 
 bg = pygame.image.load("assets/full_background.png")
 background = pygame.transform.scale(bg, (SCREEN_WIDTH, SCREEN_HEIGHT))
 self_image = pygame.image.load("assets/tile.png")
 self_image = pygame.transform.scale(self_image, (50, 50))
+bullets = []
+bullets = pygame.sprite.Group()
+
+class bullet (object):
+    def __init__(self, x,y,radius,color,facing):
+        self.x = x
+        self.y = y
+        self.image = pygame.surface((2*radius, 2*radius), pygame.SCRALPHA)
+        pygame.draw.circle(self.image, color, (radius, radius), radius)
+        self.radius = radius
+        self.color = color
+        self.facing = facing
+        self.vel = 8 * facing
+
 
 while True:
     clock.tick(FPS)
@@ -63,16 +78,36 @@ while True:
                 shooter.moving_up = False
             if event.key == pygame.K_DOWN:
                 shooter.moving_down = False
+            # Example bullet creation logic (adjust as needed)
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                new_bullet = bullet(shooter.x, shooter.y)  # Replace with the actual Bullet class
+                bullets.add(new_bullet)
+
+        for bullet in bullets:
+            if 0 < bullet.x < SCREEN_WIDTH:
+                bullet.x += bullet.vel
+            else:
+                bullets.remove(bullet)
     shooter.update()
+
+   # collisions = pygame.sprite.spritecollide(shooter, enemies, False)
+   # if len(collisions) > 0:
+        #shooter.health -= 10
+    #if pygame.sprite.spritecollide(shooter, enemies, False):
+        #shooter.health-=10
 
     screen.blit(background,(0,0))
     screen.blit(self_image, (100,100))
+
+    shooter.update()
+
+    #pygame.rect.draw(x,y, 5 ,shooter
     shooter.draw(screen)
     enemies.draw(screen)
     enemies.enemies_AI(shooter)
+    for bullet in bullets:
+        bullet.draw(screen)
     pygame.display.update()
-
-
 
 
 
