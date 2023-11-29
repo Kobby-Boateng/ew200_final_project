@@ -1,6 +1,8 @@
 import pygame
 #from settings import *
 
+bullets = pygame.sprite.Group()
+
 class Shooter(pygame.sprite.Sprite):
     def __init__(self ,x,y):
         super().__init__()
@@ -35,11 +37,5 @@ class Shooter(pygame.sprite.Sprite):
     def draw(self, screen):
         screen.blit(self.image, self.rect)
 
-class bullet(object):
-    def __init__(self, x, y, radius, color, facing):
-        self.x = x
-        self.y = y
-        self.radius = radius
-        self.color = color
-        self.facing = facing
-        self.vel = 8 * facing
+
+
