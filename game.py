@@ -33,7 +33,7 @@ self_image = pygame.transform.scale(self_image, (50, 50))
 
 shooter = Shooter(20,30)
 enemies = Enemy(200, 200)
-
+shooter2 = Shooter(450,250)
 
 bg = pygame.image.load("assets/full_background.png")
 background = pygame.transform.scale(bg, (SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -73,6 +73,30 @@ while True:
             if event.key == pygame.K_DOWN:
                 shooter.moving_down = False
             # Example bullet creation logic (adjust as needed)
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_a:
+                shooter2.moving_left = True
+            if event.key == pygame.K_d:
+                shooter2.moving_right = True
+            if event.key == pygame.K_w:
+                shooter2.moving_up = True
+            if event.key == pygame.K_s:
+                shooter2.moving_down = True
+            if event.key == pygame.K_x:
+                new_bullet = Bullet(shooter2.rect.centerx, shooter2.rect.centery,
+                                    1)  # Replace with the actual Bullet class
+                bullets.add(new_bullet)
+        elif event.type == pygame.KEYUP:
+            if event.key == pygame.K_a:
+                shooter2.moving_left = False
+            if event.key == pygame.K_d:
+                shooter2.moving_right = False
+            if event.key == pygame.K_w:
+                shooter2.moving_up = False
+            if event.key == pygame.K_s:
+                shooter2.moving_down = False
+                #
     shooter.update()
 
    # collisions = pygame.sprite.spritecollide(shooter, enemies, False)
@@ -85,9 +109,11 @@ while True:
     screen.blit(self_image, (100,100))
 
     shooter.update()
+    shooter2.update()
     bullets.update()
     #pygame.rect.draw(x,y, 5 ,shooter)
     shooter.draw(screen)
+    shooter2.draw(screen)
     enemies.draw(screen)
     enemies.enemies_AI(shooter)
     for bullet in bullets:
