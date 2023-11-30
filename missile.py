@@ -6,6 +6,8 @@ class Missile(pygame.sprite.Sprite):
         self.speed = 4
         self.image = pygame.image.load("assets/missile.png").convert_alpha()
         self.image = pygame.transform.scale(self.image, (25, 25))
+        self.left_image = self.image
+        self.left_image = pygame.transform.flip(self.image, True, False)
         self.rect = self.image.get_rect()
         self.rect.center = (x,y)
         self.direction = direction
@@ -14,4 +16,7 @@ class Missile(pygame.sprite.Sprite):
         self.rect.x += self.speed * self.direction
 
     def draw(self, screen):
-        screen.blit(self.image, self.rect)
+        if self.direction == 1:
+            screen.blit(self.image, self.rect)
+        elif self.direction == -1:
+            screen.blit(self.left_image, self.rect)

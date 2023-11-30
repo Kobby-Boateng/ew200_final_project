@@ -36,7 +36,7 @@ shooter2 = Shooter(450, 250)
 bg = pygame.image.load("assets/full_background.png")
 background = pygame.transform.scale(bg, (SCREEN_WIDTH, SCREEN_HEIGHT))
 self_image = pygame.image.load("assets/tile.png")
-self_image = pygame.transform.scale(self_image, (50, 50))
+self_image = pygame.transform.scale(self_image, (50X, 50))
 bullet_image = pygame.image.load("assets/bullet.png")
 bullets = pygame.sprite.Group()
 missiles = pygame.sprite.Group()
@@ -60,8 +60,12 @@ while True:
             if event.key == pygame.K_SPACE:
                 if shooter.image == shooter.right_image:
                     direction = 1
-                else:
+                elif shooter.image == shooter.image:
                     direction = -1
+                elif shooter.image == shooter.up_image:
+                    direction = 0
+                elif shooter.image == shooter.down_image:
+                    direction = 0
                 new_bullet = Bullet(shooter.rect.centerx, shooter.rect.centery,
                                     direction)  # Replace with the actual Bullet class
                 bullets.add(new_bullet)
@@ -88,7 +92,7 @@ while True:
             if event.key == pygame.K_x:
                 if shooter2.image == shooter2.right_image:
                     direction = 1
-                else:
+                elif shooter2.image == shooter2.image:
                     direction = -1
                 new_missile = Missile(shooter2.rect.centerx, shooter2.rect.centery,
                                       direction)  # Replace with the actual Bullet class
@@ -114,12 +118,14 @@ while True:
                 shooter2.moving_down = False
                 #
     shooter.update()
-
-    collisions = pygame.sprite.spritecollide(shooter, bullets, False)
-    if collisions:
+    collisions = pygame.sprite.spritecollide(shooter, missiles, True)
+    if len(collisions) >= 1:
         shooter.health -= 10
-    if shooter.health == 90:
-        shooter.remove()
+        print(shooter.health)
+    if shooter.health == 0:
+        collisions = pygame.sprite.spritecollide(missiles, shooter, True)
+
+
     # if pygame.sprite.spritecollide(shooter, enemies, False):
     # shooter.health-=10
 

@@ -6,7 +6,7 @@ class Bullet(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.speed = 10
         self.image = pygame.image.load("assets/bullet.png").convert_alpha()
-        self.image = pygame.transform.scale(self.image, (25, 25))
+        self.image = pygame.transform.scale(self.image, (10, 10))
         self.rect = self.image.get_rect()
         self.rect.center = (x,y)
         self.direction = direction
