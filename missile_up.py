@@ -18,7 +18,7 @@ class Missile_up(pygame.sprite.Sprite):
     def draw(self, screen):
         if self.direction == 1:
             screen.blit(self.down_image, self.rect)
-        elif self.direciton == -1:
+        elif self.direction == -1:
             screen.blit(self.up_image, self.rect)
 
 
