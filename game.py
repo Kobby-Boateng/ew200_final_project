@@ -7,14 +7,18 @@ from bullet import Bullet
 from missile import Missile
 from missile_up import Missile_up
 from missile_diagonal import Missile_diagonal
-from walls import Wall, walls, add_walls
+from walls import walls, add_walls
 import time
 import math
 
 pygame.init()
 pygame.mixer.init()
 sound = pygame.mixer.Sound('assets/rocket.wav')
+pygame.mixer.music.load('assets/background_music.wav')
+pygame.mixer.music.play(-1)
+
 bullet_sound = pygame.mixer.Sound('assets/flocka.wav')
+loser_sound = pygame.mixer.Sound('assets/loser_audio.wav')
 
 
 clock = pygame.time.Clock()
@@ -39,7 +43,6 @@ self_image = pygame.image.load("assets/tile.png")
 self_image = pygame.transform.scale(self_image, (50, 50))
 
 shooters = pygame.sprite.Group()
-#enemies = enemy.Sprite.Group()
 
 
 shooter = Shooter(20, 30)
@@ -53,6 +56,7 @@ self_image = pygame.transform.scale(self_image, (50, 50))
 bullet_image = pygame.image.load("assets/bullet.png")
 bullets = pygame.sprite.Group()
 missiles = pygame.sprite.Group()
+
 
 while True:
     clock.tick(FPS)
@@ -71,7 +75,10 @@ while True:
             if event.key == pygame.K_DOWN:
                 shooter.moving_down = True
             if event.key == pygame.K_SPACE:
-                bullet_sound.play()
+                if shooter.image != shooter.loser_image:
+                    bullet_sound.play()
+                else:
+                    loser_sound.play()
                 directionx = 1
                 directiony = 0
                 if shooter.image == shooter.right_image:
@@ -98,6 +105,9 @@ while True:
                 elif shooter.image == shooter.up_left_image:
                     directionx = -1
                     directiony = -1
+                elif shooter.image == shooter.loser_image:
+                    directionx = 0
+                    directiony = 0
                 new_bullet = Bullet(shooter.rect.centerx, shooter.rect.centery,directionx, directiony)  # Replace with the actual Bullet class
                 bullets.add(new_bullet)
         elif event.type == pygame.KEYUP:
@@ -120,10 +130,18 @@ while True:
                 shooter2.moving_up = True
             if event.key == pygame.K_s:
                 shooter2.moving_down = True
+            if event.key == pygame.K_SPACE and shooter.image == shooter.loser_image:
+                loser_sound.play()
+            if event.key == pygame.K_x and shooter2.image == shooter2.loser_image:
+                loser_sound.play()
+
 
            #Functionality of shooter 2's left and right missiles
             if event.key == pygame.K_x:
-                sound.play()
+                if shooter2.image != shooter2.loser_image:
+                    sound.play()
+                else:
+                    loser_sound.play()
                 direction = 1
                 if shooter2.image == shooter2.right_image:
                     direction = 1
@@ -187,6 +205,7 @@ while True:
                 sound.play()
                 missiles.add(new_missile_diagonal)
 
+
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_a:
                 shooter2.moving_left = False
@@ -197,51 +216,69 @@ while True:
             if event.key == pygame.K_s:
                 shooter2.moving_down = False
                 #
+
+   #collision functions of the bullets and shooters
     collisions = pygame.sprite.spritecollide(shooter, missiles, True)
-    if len(collisions) >= 1:
+    if len(collisions) >= 1 and shooter.health >= 10:
         shooter.health -= 10
         print(shooter.health)
-    if shooter.health == 0:
-        collisions = pygame.sprite.spritecollide(missiles, shooter, False)
-        shooter.draw(screen)
+    elif len(collisions) >= 1 and shooter.health <= 10:
+        shooter.health -= 0
+        print (shooter.health)
 
     collisions = pygame.sprite.spritecollide(shooter2, bullets, True)
-    if len(collisions) >= 1:
-        shooter2.health -= 10
-        print(shooter2.health)
-    if shooter2.health == 0:
-        collisions = pygame.sprite.spritecollide(bullets, shooter2, False)
-        shooter2.draw(screen)
+    if len(collisions) >= 1 and shooter2.health >= 10:
+        shooter2.health -= 6
+    elif len(collisions) >= 1 and shooter2.health <= 5:
+        shooter2.health += 0
     for wall in walls:
         pygame.sprite.spritecollide(wall, bullets, True)
         pygame.sprite.spritecollide(wall, missiles, True)
+        #pygame.sprite.spritecollide(shooter, wall, False)
+       # pygame.sprite.spritecollide(shooter2, wall, False)
 
-        pygame.sprite.spritecollide(shooter, walls, False)
-    #collisions = pygame.sprite.spritecollide(shooter2, enemies,True)
+    collisions = pygame.sprite.spritecollide(enemy, missiles, True)
+    if len(collisions) >= 1:
+        shooter2.health += 10
+        print(shooter2.health)
+    #collisions = pygame.sprite.spritecollide(shooter2, enemy,False)
     #if len(collisions) >= 1:
-        #shooter2.health += 30
+        #shooter2.health -= 30
         #print(shooter2.health)
+#Ask about making collisions with my enemy class work properly
+    #collisions = pygame.sprite.spritecollide(bullets, enemy, False)
+    #if pygame.sprite.spritecollide(shooter, enemies, False):
+        #shooter.health-=10
 
-    # if pygame.sprite.spritecollide(shooter, enemies, False):
-    # shooter.health-=10
+
 
     screen.blit(background, (0, 0))
     screen.blit(self_image, (100, 100))
-
+    enemy.update()
     shooter.update()
     shooter2.update()
     bullets.update()
     missiles.update()
+    if shooter2.health <= 25:
+        enemy.image = pygame.transform.scale(pygame.image.load("assets/fighter.png"), (50,50))
+        enemy.update()
+        enemy.update()
+        shooter.update()
+        missiles.speed = 6
+        missiles.update()
+    elif shooter2. health >= 25:
+        enemy.image = pygame.transform.scale(enemy.image, (0,0))
+    enemy.enemy_AI(shooter)
     # pygame.rect.draw(x,y, 5 ,shooter)
     shooter.draw(screen)
     shooter2.draw(screen)
-    #enemies.draw(screen)
-    #enemies.enemies_AI(shooter)
+    #for enemy in enemies:
+    enemy.draw(screen)
     for bullet in bullets:
         bullet.draw(screen)
     for missile in missiles:
         missile.draw(screen)
-    walls.draw(screen)
+    # walls.draw(screen)
     pygame.display.update()
 
 # Things to keep true
