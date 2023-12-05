@@ -55,7 +55,7 @@ class Shooter(pygame.sprite.Sprite):
             self.image = self.up_left_image
         if self.moving_down and self.moving_left:
             self.image = self.down_left_image
-        if self.health <= 5:
+        if self.health <= 7:
             self.image = self.loser_image
 
     #def player_health (self, health):

@@ -237,7 +237,7 @@ while True:
    #collision functions of the bullets and shooters
     collisions = pygame.sprite.spritecollide(shooter, missiles, True)
     if len(collisions) >= 1 and shooter.health >= 10:
-        shooter.health -= 9
+        shooter.health -= 7
         print(shooter.health)
     elif len(collisions) >= 1 and shooter.health <= 5:
         shooter.health += 0
@@ -248,7 +248,7 @@ while True:
         shooter2.health -= 6
     elif len(collisions) >= 1 and shooter2.health <= 5:
         shooter2.health += 0
-        
+
     for wall in walls:
         pygame.sprite.spritecollide(wall, bullets, True)
         pygame.sprite.spritecollide(wall, missiles, True)
@@ -282,7 +282,8 @@ while True:
         enemy.update()
         enemy.update()
         shooter.update()
-        missiles.speed = 6
+        shooter.update()
+        missiles.speed = 4
         missiles.update()
     elif shooter2. health >= 25:
         enemy.image = pygame.transform.scale(enemy.image, (0,0))
