@@ -1,6 +1,5 @@
 import pygame
 import math
-from shooter import Shooter
 
 enemies = pygame.sprite.Group()
 
@@ -8,7 +7,7 @@ class Enemy(pygame.sprite.Sprite):
     def __init__ (self, x,y):
         super().__init__()
         self.image = pygame.image.load("assets/fighter.png")
-        self.image = pygame.transform.scale(self.image, (50,50))
+        self.image = pygame.transform.scale(self.image, (1,1))
         self.rect = pygame.Rect(x, y, self.image.get_width(), self.image.get_height())
 
 
