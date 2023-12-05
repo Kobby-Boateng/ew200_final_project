@@ -4,8 +4,7 @@ import sys
 from shooter import Shooter
 from enemy import Enemy
 from bullet import Bullet
-from missile import Missile
-from missile_up import Missile_up
+
 from missile_diagonal import Missile_diagonal
 from walls import walls, add_walls
 import time
@@ -94,7 +93,7 @@ while True:
                     directiony = 1
                     directionx = 0
                 elif shooter.image == shooter.down_right_image:
-                    directionx  = 1
+                    directionx = 1
                     directiony = 1
                 elif shooter.image == shooter.down_left_image:
                     directionx = -1
@@ -142,68 +141,86 @@ while True:
                     sound.play()
                 else:
                     loser_sound.play()
-                direction = 1
-                if shooter2.image == shooter2.right_image:
-                    direction = 1
-                elif shooter2.image == shooter2.left_image:
-                    direction = -1
-                elif shooter2.image == shooter2.up_image:
-                    direction = 0
-                elif shooter2.image == shooter2.down_image:
-                    direction = 0
-                else:
-                    direction = 0
-                new_missile = Missile(shooter2.rect.centerx, shooter2.rect.centery, direction)  # Replace with the actual Bullet classx
-                missiles.add(new_missile)
-            #Functionality of shooter2's up and down missiles
-            if event.key == pygame.K_x and (shooter2.image == shooter2.down_image or shooter2.image == shooter2.up_image):
-                direction = 1
-                sound.play()
-                if shooter2.image == shooter2.down_image:
-                    direction = 1
-                elif shooter2.image == shooter2.up_image:
-                    direction = -1
-                elif shooter2.image == shooter2.up_right_image:
-                    direction = 0
-                elif shooter2.image == shooter2.left_image and shooter2.moving_down == False:
-                    direction = 0
-                new_missile_up = Missile_up(shooter2.rect.centerx, shooter2.rect.centery, direction)
-                print("shooting missile up")
-                missiles.add(new_missile_up)
-            #functionality of shooter2's diagonal missiles
-            if event.key == pygame.K_x and (shooter2.image == shooter2.up_right_image):
                 directionx = 1
-                directiony = -1
-                sound.play()
-                if shooter2.moving_up == True and shooter2.moving_right == True:
+                directiony = 0
+                if shooter2.image == shooter2.right_image:
+                    directionx = 1
+                    directiony = 0
+                elif shooter2.image == shooter2.left_image:
+                    directionx = -1
+                    directiony = 0
+                elif shooter2.image == shooter2.up_image:
+                    directionx = 0
+                    directiony = -1
+                elif shooter2.image == shooter2.down_image:
+                    directionx = 0
+                    directiony = 1
+                elif shooter2.image == shooter2.down_right_image or (shooter2.moving_down == True and shooter2.moving_right == True):
+                    directionx = 1
+                    directiony = 1
+                elif shooter2.image == shooter2.down_left_image:
+                    directionx = -1
+                    directiony = 1
+                elif shooter2.image == shooter2.up_right_image:
                     directionx = 1
                     directiony = -1
-                    if event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_SPACE:
-                            new_missile_diagonal = Missile_diagonal(shooter2.rect.centerx, shooter2.rect.centery, directionx,directiony)
-                            print("shooting missile diagonal")
-                            missiles.add(new_missile_diagonal)
-            if event.key == pygame.K_x and shooter2.image == shooter2.down_right_image:
-                sound.play()
-                directionx = 1
-                directiony = 1
-                if shooter2.moving_down and shooter2.moving_right:
-                    directionx = 1
-                    directiony = 1
-                new_missile_diagonal = Missile_diagonal(shooter2.rect.centerx, shooter2.rect.centery, directionx, directiony)
-                print("shooting missile diagoxssssnal down left")
+                elif shooter2.image == shooter2.up_left_image:
+                    directionx = -1
+                    directiony = -1
+                elif shooter2.image == shooter2.loser_image:
+                    directionx = 0
+                    directiony = 0
+                new_missile_diagonal = Missile_diagonal(shooter2.rect.centerx, shooter2.rect.centery, directionx, directiony)  # Replace with the actual Bullet classx
                 missiles.add(new_missile_diagonal)
-            if event.key == pygame.K_x and (shooter2.image == shooter2.down_left_image):
-                directionx = -1
-                directiony = 1
-                if shooter2.moving_up == True and shooter2.moving_left == True:
-                    directionx = 1
-                    directiony = 1
-                new_missile_diagonal = Missile_diagonal(shooter2.rect.centerx, shooter2.rect.centery, directionx,
-                                                        directiony)
-                print("shooting missile diagonal")
-                sound.play()
-                missiles.add(new_missile_diagonal)
+            #Functionality of shooter2's up and down missiles
+            #if event.key == pygame.K_x and (shooter2.image == shooter2.down_image or shooter2.image == shooter2.up_image):
+                #direction = 1
+                #sound.play()
+                #if shooter2.image == shooter2.down_image:
+                #    direction = 1
+                #elif shooter2.image == shooter2.up_image:
+                #    direction = -1
+                #elif shooter2.image == shooter2.up_right_image:
+                #    direction = 0
+                #elif shooter2.image == shooter2.left_image and shooter2.moving_down == False:
+                #    direction = 0
+                #new_missile_up = Missile_up(shooter2.rect.centerx, shooter2.rect.centery, direction)
+                #print("shooting missile up")
+                #missiles.add(new_missile_up)
+            #functionality of shooter2's diagonal missiles
+            #if event.key == pygame.K_x and (shooter2.image == shooter2.up_right_image):
+            #    directionx = 1
+            #    directiony = -1
+            #    sound.play()
+            #    if shooter2.moving_up == True and shooter2.moving_right == True:
+            #        directionx = 1
+            #        directiony = -1
+            #        if event.type == pygame.KEYDOWN:
+            #            if event.key == pygame.K_SPACE:
+            #                new_missile_diagonal = Missile_diagonal(shooter2.rect.centerx, shooter2.rect.centery, directionx,directiony)
+            #                print("shooting missile diagonal")
+            #                missiles.add(new_missile_diagonal)
+            #if event.key == pygame.K_x and shooter2.image == shooter2.down_right_image:
+            #    sound.play()
+            #    directionx = 1
+            #    directiony = 1
+            #    if shooter2.moving_down and shooter2.moving_right:
+            #        directionx = 1
+            #        directiony = 1
+             #   new_missile_diagonal = Missile_diagonal(shooter2.rect.centerx, shooter2.rect.centery, directionx, directiony)
+             #   print("shooting missile diagoxssssnal down left")
+             #   missiles.add(new_missile_diagonal)
+            #if event.key == pygame.K_x and (shooter2.image == shooter2.down_left_image):
+            #    directionx = -1
+            #    directiony = 1
+            #    if shooter2.moving_up == True and shooter2.moving_left == True:
+            #        directionx = 1
+            #        directiony = 1
+            #    new_missile_diagonal = Missile_diagonal(shooter2.rect.centerx, shooter2.rect.centery, directionx,
+            #                                            directiony)
+            #    print("shooting missile diagonal")
+            #    sound.play()
+            #    missiles.add(new_missile_diagonal)
 
 
         elif event.type == pygame.KEYUP:
@@ -220,10 +237,10 @@ while True:
    #collision functions of the bullets and shooters
     collisions = pygame.sprite.spritecollide(shooter, missiles, True)
     if len(collisions) >= 1 and shooter.health >= 10:
-        shooter.health -= 10
+        shooter.health -= 9
         print(shooter.health)
-    elif len(collisions) >= 1 and shooter.health <= 10:
-        shooter.health -= 0
+    elif len(collisions) >= 1 and shooter.health <= 5:
+        shooter.health += 0
         print (shooter.health)
 
     collisions = pygame.sprite.spritecollide(shooter2, bullets, True)
@@ -231,6 +248,7 @@ while True:
         shooter2.health -= 6
     elif len(collisions) >= 1 and shooter2.health <= 5:
         shooter2.health += 0
+        
     for wall in walls:
         pygame.sprite.spritecollide(wall, bullets, True)
         pygame.sprite.spritecollide(wall, missiles, True)
